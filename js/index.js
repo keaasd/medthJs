@@ -104,3 +104,37 @@ modal.addEventListener('click', () => {
 }
 // contains - метод, возвращает булевое значение
 // menu.classList.toggle(openSelector);
+{// галерея
+
+const portfolioList = document.querySelector ('.portfolio__list');
+const pageOverlay = document.createElement('div');
+pageOverlay.classList.add('page__overlay');
+
+portfolioList.addEventListener('click', (event) => {
+    
+    const card = event.target.closest('.card');
+
+    if (card) {
+
+        document.body.append(pageOverlay)
+
+        const img = document.createElement('img');
+        img.src = card.dataset.fullImage + '.jpg';
+        img.style.cssText = `
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        `;
+
+        pageOverlay.append(img)
+
+        
+        }
+    })
+    pageOverlay.addEventListener('click', () => {
+        pageOverlay.remove();
+        pageOverlay.textContent = '';
+    })
+}
+//17:50
