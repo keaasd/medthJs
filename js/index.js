@@ -50,14 +50,15 @@ const disabledScroll = () => {
 
 
     
-const closeModal = () => {
-    enabledScroll();
+    const closeModal = () => {
+    
     const timer = setInterval (() => {
         opacity -= 0.02;
         modal.style.opacity;
         if (opacity <= 0) {
             clearInterval(timer)
             modal.classList.remove(openSelector);
+            enabledScroll();
         }
     }, speed[sk])            
 };
@@ -152,4 +153,114 @@ portfolioList.addEventListener('click', (event) => {
         pageOverlay.textContent = '';
     })
 }
-//17:50
+{ // создание карточек портфолио на основе данных из json
+    const COUNT_CARD = 2;
+    const portfolioList = document.querySelector('.portfolio__list');
+    const portfolioAdd = document.querySelector('.portfolio__add');
+
+    const getData = () => fetch('db.json')                   
+            .then((response) => {
+                if (response.ok) {
+                    return response.json()
+                } else {
+                    throw `xyt nfr позже, ошибка: $p{response.status}`
+                }
+            })
+            .catch(error => console.error(error));                
+    
+    const createStore = async () => {
+        const data = await getData();
+        // const cardData = {
+            
+            return { 
+                data,
+                counter: 0,
+                count: COUNT_CARD,
+                get lenght() {
+                    return this.data.length;
+                },
+                get cardData() {
+                    const renderData = this.data.slice(this.counter, this.counter + this.count);
+                    this.counter += renderData.length;
+                    return renderData;
+                }
+        };        
+    };
+
+    const renderCard = data => {
+        console.log(data);
+        const cards = data.map(({ preview, year, type, client, image }) => { 
+            
+            // const  = item;
+
+            const li = document.createElement('li');
+            li.classList.add('portfolio__item');
+            
+            li.innerHTML = `
+                <article class="card" tabindex="0" role="button" aria-label="открыть макет" data-full-image="${image}">
+                <picture class="card__picture">
+                    <source srcset="${preview}.avif" type="image/avif">
+                    <source srcset="${preview}.webp" type="image/webp">
+                    <img src="${preview}.jpg" alt="превью game over" width="166" height="103">
+                </picture>
+
+                <p class="card__data">
+                    <span class="card__client">Клиент: ${client}</span>
+                    <time class="card__date" datetime="${year}">год: ${year}</time>
+                </p>
+
+                <h3 class="card__title">${type}</h3>
+                </article>
+                `;
+            
+                return li;
+        })
+        portfolioList.append(...cards)
+        // console.log(cards);
+    };
+
+    const inintPortfolio = async () => {
+        const store = await createStore();
+        
+        renderCard(store.cardData);
+        
+        portfolioAdd.addEventListener('click', () => {
+            
+            console.log(store.cardData);
+            console.log(store.length, store.counter);
+            if (store.length === store.counter){
+                portfolioAdd.remove();
+            }
+        })
+    };
+    inintPortfolio()
+}
+// portfolio__list  portfolio__add
+// portfolioAdd
+
+ // console.log(`getData())`, getData());
+
+
+    // return this. текущий объект 25:09
+
+    // createStore()
+
+    // const arr = [1,2,3,4];
+        
+    // const result = arr.map((item, index, array) => {
+    //         console.log(item)
+    //         console.log(index)
+    //         console.log(array)
+    //         return {
+    //             speaker: 'макс',
+    //             day: item,
+
+    //         }
+    //             });
+// const arr = [1,2,3,4];
+//     arr.forEach((item, index, array) => {
+//         console.log(item)
+//         console.log(index)
+//         console.log(array)
+        
+//     }) не возвращает результат.
